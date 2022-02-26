@@ -15,7 +15,7 @@
     },
 
     "content_scripts" : [{
-        "matches" : ["https://www.google.com/*"], "css" : ["main.css"]
+        "matches" : ["https://www.google.com/*"], "html" : ["index.html"], "css" : ["main.css"]
       }]
     
 }         
