@@ -28,4 +28,7 @@ def getNewPicture():
     response = get_data("L1rCrYxdmYFpywxIkOoN0Q0fNJ8pTG3NZEyGAuRk")
     download_image(get_url(response), get_date(response))
     url = get_url(response)
+    print ("hey")
     return url
+
+print ("probably shouldn't print")
