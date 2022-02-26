@@ -31,4 +31,4 @@ def getNewPicture():
     print ("hey")
     return url
 
-print ("probably shouldn't print")
+print ("probably shouldn't print!")
