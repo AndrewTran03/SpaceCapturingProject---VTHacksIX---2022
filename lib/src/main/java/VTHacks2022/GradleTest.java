@@ -2,12 +2,7 @@ package VTHacks2022;
 
 import com.hedera.hashgraph.sdk.*;
 import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeoutException;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 import java.io.File;  
 import java.io.FileNotFoundException;  
@@ -38,7 +33,7 @@ public class GradleTest{
   
           AccountId userAccountId = userAccount.getReceipt(client).accountId;
           PrivateKey supplyKey = PrivateKey.generate();
-          PublicKey supplyPublicKey = supplyKey.getPublicKey();
+          //PublicKey supplyPublicKey = supplyKey.getPublicKey();
   
           //creates the empty NFT
           TokenCreateTransaction nftCreate = new TokenCreateTransaction()
