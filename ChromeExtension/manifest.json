@@ -1,0 +1,21 @@
+{
+	"manifest_version" : 2,
+	"name" : "iEatBackground",
+    "description" : "Add a custom background to Google Chrome",
+	"version" : "1.0",
+	"icons" : {
+        "16" : "icon16.png",
+        "32" : "icon32.png"
+    },
+    "page_action" : {
+        "default_icon" : {
+            "16" : "icon16.png",
+            "32" : "icon32.png"
+        }
+    },
+
+    "content_scripts" : [{
+        "matches" : ["https://www.google.com/*"], "css" : ["main.css"]
+      }]
+    
+}         
