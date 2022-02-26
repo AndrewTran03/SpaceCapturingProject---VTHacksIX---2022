@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from unicodedata import name
+from flask import Flask, render_template, request
 app = Flask(__name__)
 
 import requests
@@ -39,9 +40,11 @@ def index():
   return render_template('index.html')
 
 #C:/Users/mattb/Documents/VTHacks2022/VTHacks2022/nasaPictures.py
-@app.route('/my-link/')
+@app.route('/my-link/', methods = ['POST','GET'])
 def my_link():
-  return getNewPicture()
+    print("it do be changing!!!")
+    imageLink = getNewPicture()
+    return render_template("index.html",image = imageLink)
 
 if __name__ == '__main__':
   app.run(debug=True)
