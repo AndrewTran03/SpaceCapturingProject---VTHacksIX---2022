@@ -1,11 +1,16 @@
+<!doctype html>
 <html>
-    <head>
-        <title>Running a Python script</title>
-        <?PHP
-        echo shell_exec("python nasaPictures.py");
-        ?>
-        </head>
-    <body>
-        <p id="pictures"> Pictures go here!</p>
-    </body>
+  <head>
+    <title>This page runs python in html!</title>
+    <?php 
+
+    $command = escapeshellcmd('c:/Users/mattb/Documents/VTHacks2022/VTHacks2022');
+    $output = shell_exec($command);
+    echo $output;
+
+?>
+
+  </head>
+  <body>
+  </body>
 </html>
