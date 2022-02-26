@@ -2,9 +2,11 @@ package VTHacks2022;
 
 import com.hedera.hashgraph.sdk.*;
 import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeoutException;
+
+import java.io.File;  
+import java.io.FileNotFoundException;  
+import java.util.Scanner; 
 
 public class GradleTest{
     public static void main(String[] args) throws TimeoutException, PrecheckStatusException, ReceiptStatusException{
@@ -30,15 +32,13 @@ public class GradleTest{
                   .execute(client);
   
           AccountId userAccountId = userAccount.getReceipt(client).accountId;
-  
-          //Alice Key
           PrivateKey supplyKey = PrivateKey.generate();
-          PublicKey supplyPublicKey = supplyKey.getPublicKey();
+          //PublicKey supplyPublicKey = supplyKey.getPublicKey();
   
-          //Create the NFT
+          //creates the empty NFT
           TokenCreateTransaction nftCreate = new TokenCreateTransaction()
-                  .setTokenName("diploma")
-                  .setTokenSymbol("GRAD")
+                  .setTokenName("Space Pictures")
+                  .setTokenSymbol("SPC")
                   .setTokenType(TokenType.NON_FUNGIBLE_UNIQUE)
                   .setDecimals(0)
                   .setInitialSupply(0)
@@ -49,68 +49,52 @@ public class GradleTest{
                   .freezeWith(client);
   
   
-          //Sign the transaction with the treasury key
           TokenCreateTransaction nftCreateTxSign = nftCreate.sign(treasuryKey);
-  
-          //Submit the transaction to a Hedera network
           TransactionResponse nftCreateSubmit = nftCreateTxSign.execute(client);
-  
-          //Get the transaction receipt
           TransactionReceipt nftCreateRx = nftCreateSubmit.getReceipt(client);
-  
-          //Get the token ID
           TokenId tokenId = nftCreateRx.tokenId;
   
-          //Log the token ID
           System.out.println("Created NFT with token ID " +tokenId);
   
           // IPFS CONTENT IDENTIFIERS FOR WHICH WE WILL CREATE NFT
-          String CID = ("QmTzWcVfk88JRqjTpVwHzBeULRTNzHY7mnBSG42CpwHmPa") ;
-  
-          // MINT NEW NFT
+          String CID = "";
+          try {
+                File myObj = new File("C:/Users/mattb/Documents/VTHacks2022/VTHacks2022/test.txt");
+                Scanner myReader = new Scanner(myObj);
+                while (myReader.hasNextLine()) {
+                  CID = myReader.nextLine();
+                }
+                myReader.close();
+              } catch (FileNotFoundException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+              }
+        System.out.println();
+
           TokenMintTransaction mintTx = new TokenMintTransaction()
                   .setTokenId(tokenId)
                   .addMetadata(CID.getBytes())
               .freezeWith(client);
   
-          //Sign with the supply key
           TokenMintTransaction mintTxSign = mintTx.sign(supplyKey);
-  
-          //Submit the transaction to a Hedera network
           TransactionResponse mintTxSubmit = mintTxSign.execute(client);
-  
-          //Get the transaction receipt
           TransactionReceipt mintRx = mintTxSubmit.getReceipt(client);
-  
-          //Log the serial number
           System.out.println("Created NFT " +tokenId + "with serial: " +mintRx.serials);
-  
-      //Create the associate transaction and sign with Alice's key 
-          TokenAssociateTransaction associateAliceTx = new TokenAssociateTransaction()
+
+          TokenAssociateTransaction associateUserTx = new TokenAssociateTransaction()
                   .setAccountId(userAccountId)
                   .setTokenIds(Collections.singletonList(tokenId))
               .freezeWith(client)
                   .sign(userKey);
-  
-          //Submit the transaction to a Hedera network
-          TransactionResponse associateAliceTxSubmit = associateAliceTx.execute(client);
-  
-          //Get the transaction receipt
-          TransactionReceipt associateAliceRx = associateAliceTxSubmit.getReceipt(client);
-  
-          //Confirm the transaction was successful
-          System.out.println("NFT association with Alice's account: " +associateAliceRx.status);
-  
-          // Check the balance before the NFT transfer for the treasury account
+
+          TransactionResponse associateUserTxSubmit = associateUserTx.execute(client);
+          TransactionReceipt associateUserRx = associateUserTxSubmit.getReceipt(client);
+          System.out.println("NFT association with User's account: " +associateUserRx.status);
           AccountBalance balanceCheckTreasury = new AccountBalanceQuery().setAccountId(treasuryId).execute(client);
           System.out.println("Treasury balance: " +balanceCheckTreasury.tokens + "NFTs of ID " +tokenId);
+          AccountBalance balanceCheckUser = new AccountBalanceQuery().setAccountId(userAccountId).execute(client);
+          System.out.println("User's balance: " +balanceCheckUser.tokens + "NFTs of ID " +tokenId);
   
-          // Check the balance before the NFT transfer for Alice's account
-          AccountBalance balanceCheckAlice = new AccountBalanceQuery().setAccountId(userAccountId).execute(client);
-          System.out.println("Alice's balance: " +balanceCheckAlice.tokens + "NFTs of ID " +tokenId);
-  
-          // Transfer NFT from treasury to Alice
-          // Sign with the treasury key to authorize the transfer
           TransferTransaction tokenTransferTx = new TransferTransaction()
                   .addNftTransfer( new NftId(tokenId, 1), treasuryId, userAccountId)
                   .freezeWith(client)
@@ -119,15 +103,13 @@ public class GradleTest{
           TransactionResponse tokenTransferSubmit = tokenTransferTx.execute(client);
           TransactionReceipt tokenTransferRx = tokenTransferSubmit.getReceipt(client);
   
-          System.out.println("NFT transfer from Treasury to Alice: " +tokenTransferRx.status);
-  
-          // Check the balance for the treasury account after the transfer
+          System.out.println("NFT transfer from Treasury to User: " +tokenTransferRx.status);
+
           AccountBalance balanceCheckTreasury2 = new AccountBalanceQuery().setAccountId(treasuryId).execute(client);
           System.out.println("Treasury balance: " +balanceCheckTreasury2.tokens + "NFTs of ID " + tokenId);
-  
-          // Check the balance for Alice's account after the transfer
-          AccountBalance balanceCheckAlice2 = new AccountBalanceQuery().setAccountId(userAccountId).execute(client);
-          System.out.println("Alice's balance: " +balanceCheckAlice2.tokens +  "NFTs of ID " +tokenId);
+
+          AccountBalance balanceCheckUser2 = new AccountBalanceQuery().setAccountId(userAccountId).execute(client);
+          System.out.println("User's balance: " +balanceCheckUser2.tokens +  "NFTs of ID " +tokenId);
               
         
     }
