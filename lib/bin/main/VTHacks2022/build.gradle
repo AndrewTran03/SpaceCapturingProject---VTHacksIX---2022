@@ -1,0 +1,9 @@
+dependencies {
+
+    implementation 'com.hedera.hashgraph:sdk:2.5.0'
+    implementation 'io.grpc:grpc-netty-shaded:1.40.0'
+    compile 'io.github.cdimascio:java-dotenv:5.2.1' // Module that stores your environment variables from a .env file
+    implementation 'org.slf4j:slf4j-nop:1.7.29'
+    implementation 'com.google.code.gson:gson:2.8.8'
+    
+}

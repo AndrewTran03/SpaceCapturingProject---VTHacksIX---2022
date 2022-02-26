@@ -23,8 +23,9 @@ def download_image(url, date):
             file.write(raw_image)
     else:
         return FileExistsError
-
-response = get_data("L1rCrYxdmYFpywxIkOoN0Q0fNJ8pTG3NZEyGAuRk")
-download_image(get_url(response), get_date(response))
-url = get_url(response)
-print(url)
+        
+def getNewPicture():
+    response = get_data("L1rCrYxdmYFpywxIkOoN0Q0fNJ8pTG3NZEyGAuRk")
+    download_image(get_url(response), get_date(response))
+    url = get_url(response)
+    return url
