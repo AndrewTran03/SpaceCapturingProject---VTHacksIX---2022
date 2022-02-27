@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 public class GradleTest{
     public static void main(String[] args) throws TimeoutException, PrecheckStatusException, ReceiptStatusException{
-        AccountId myAccountId = AccountId.fromString(""); //developer id here
-        PrivateKey myPrivateKey = PrivateKey.fromString(""); //developer private key here
+        AccountId myAccountId = AccountId.fromString("0.0.30813623"); //developer id here
+        PrivateKey myPrivateKey = PrivateKey.fromString("302e020100300506032b657004220420688ba747d8c6081121a3e149e7dd0cc627333de6efdc640a512ffbbcdc4b87dd"); //developer private key here
         //Create your Hedera testnet client
         Client client = Client.forTestnet();
         client.setOperator(myAccountId, myPrivateKey);
